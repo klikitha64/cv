@@ -1,12 +1,26 @@
 import cv2
 import numpy as np
+import requests
+from io import BytesIO
 from google.colab.patches import cv2_imshow
 
-width, height = 500, 500
-image = np.zeros((height, width, 3), dtype=np.uint8)
+image_url = "https://wallpapercave.com/wp/fcdmlRC.jpg"
 
-cv2.rectangle(image, (50, 50), (200, 200), (255, 255, 255), -1)  
-cv2.circle(image, (300, 300), 50, (0, 0, 255), -1) 
-cv2.rectangle(image, (400, 100), (450, 200), (0, 255, 0), -1)  
 
-cv2_imshow(image)
+response = requests.get(image_url)
+image_bytes = BytesIO(response.content)
+image = cv2.imdecode(np.frombuffer(image_bytes.read(), np.uint8), cv2.IMREAD_COLOR)
+
+if image is None:
+    print(f"Error: Unable to load image from '{image_url}'")
+else:
+   
+    new_width = 300
+    new_height = 200
+    resized_image = cv2.resize(image, (new_width, new_height))
+
+   
+    cv2_imshow(image)
+    cv2_imshow(resized_image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
