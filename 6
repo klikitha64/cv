@@ -1,0 +1,23 @@
+import cv2
+import numpy as np
+from google.colab.patches import cv2_imshow
+
+image_bgr = cv2.imread("/content/1.jpg")
+
+if image_bgr is None:
+    print("Error: Could not load the image.")
+else:
+  
+    image_gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
+
+    scale_factor = 0.1
+
+    resized_original = cv2.resize(image_bgr, None, fx=scale_factor, fy=scale_factor)
+    resized_gray = cv2.resize(image_gray, None, fx=scale_factor, fy=scale_factor)
+
+    cv2_imshow(resized_original)
+    cv2_imshow(resized_gray)
+
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
